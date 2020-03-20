@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Warda Demo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Custom CSS styles -->
+        <link rel="stylesheet" href="css/style.css">
+
+        <script src="jsvideo/analytics.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="css/videostyle.css">
+        <style>
+            body {text-align: center;}
+            ul {list-style:none;}
+            #drag { border: 5px solid #02283b; text-align: center; padding:20px; width: 500px; margin: auto; display: inline-block;}
+            #einput {width:400px;}
+            #output {margin:20px;}
+
+            #filesinput {
+                visibility: collapse;
+                width: 0px;
+            }
+            #output img{
+                border: 5px solid #333;
+                margin-right: 2px;
+            }
+            #small label {font-size:14px;}
+            #small div {margin:5px 0;}
+
+            .btransparent{
+                background-color: transparent;
+                color: black;
+            }
+            .btransparent:hover {
+                background-color: transparent;
+                color: black;
+                font-weight: 650;
+            }
+            .hidden{
+              display: none;
+            }
+            #gifaccordion{
+              margin-top: 20px;
+              padding: 5px 15px;
+            }
+            #mp4accordion{
+              margin-top: 20px;
+              padding: 5px 15px;
+            }
+            .progressBar{ 
+              margin: 5px auto;
+              padding: auto;
+              width: 200px; 
+              min-height: 30px;
+              text-align: center;
+              border: 1px solid #02283b;
+              background: -webkit-linear-gradient(left, #02283b 25%, #ffffff 25%);
+              background: -moz-linear-gradient(left, #02283b 25%, #ffffff 25%);
+              background: -o-linear-gradient(left, #02283b 25%, #ffffff 25%);
+              background: -ms-linear-gradient(left, #02283b 25%, #ffffff 25%);
+              background: linear-gradient(left, #02283b 25%, #ffffff 25%);
+            }
+            .progressBar50{
+              background: -webkit-linear-gradient(left, #02283b 50%, #ffffff 50%);
+              background: -moz-linear-gradient(left, #02283b 50%, #ffffff 50%);
+              background: -o-linear-gradient(left, #02283b 50%, #ffffff 50%);
+              background: -ms-linear-gradient(left, #02283b 50%, #ffffff 50%);
+              background: linear-gradient(left, #02283b 50%, #ffffff 50%);
+            }
+            .progressBar75{
+              background: -webkit-linear-gradient(left, #02283b 75%, #ffffff 75%);
+              background: -moz-linear-gradient(left, #02283b 75%, #ffffff 75%);
+              background: -o-linear-gradient(left, #02283b 75%, #ffffff 75%);
+              background: -ms-linear-gradient(left, #02283b 75%, #ffffff 75%);
+              background: linear-gradient(left, #02283b 75%, #ffffff 75%);
+            }
+            .progressBar100{
+              background: -webkit-linear-gradient(left, #02283b 100%, #ffffff 100%);
+              background: -moz-linear-gradient(left, #02283b 100%, #ffffff 100%);
+              background: -o-linear-gradient(left, #02283b 100%, #ffffff 100%);
+              background: -ms-linear-gradient(left, #02283b 100%, #ffffff 100%);
+              background: linear-gradient(left, #02283b 100%, #ffffff 100%);
+            }
+        </style>
+    </head>
+    <body onload="toggle();">
+
+        <!-- fixed-title -->
+        <nav class="fixed-title text-center">
+          <span class="gifshot-header-text-container" style="padding-left: 20px;">
+            <a role="banner"><img src="logo.svg"></a>
+          </span>
+          <!-- main-header -->
+          <header class="main-navigation navbar demo-navigation">
+          </header>
+        </nav>
+      <!-- demo-section  -->
+      <section class="demo-section v-center">
+          <div class="row">
+            <div class="col-md-6 options-section">
+              <div class="row">
+                <div class="col-md-4">
+                  <h3>Options</h3>
+                </div>
+                <div class="col-md-6" style="padding-left: 25%;">
+                  <button class="btn btn-info" id="gifaccordion">GIF</button>
+                  <button class="btn btn-info" id="mp4accordion">MP4</button>
+                </div>
+              </div>
+              <div id="drag" class="row mp4maker hidden">
+                  <button id="fbutton" class="form-control btn btn-success btransparent">Drop or upload files</button>
+                  <div class="row">
+                    <div class="col-md-4">  
+                      <label for="gifWidth">VIDEO Width</label>
+                      <div class="input-group">
+                        <input name="gifWidth" id="width" class="form-control" value="200"  type="number"/>
+                        <div class="input-group-addon">px</div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="gifHeight">VIDEO Height</label>
+                      <div class="input-group">
+                        <input name="gifHeight" id="height" class="form-control" value="200"  type="number" />
+                        <div class="input-group-addon">px</div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="frameDuration">Frame Rate</label>
+                      <input name="frameDuration" id="framerate" class="form-control" value="24" step="1"  type="number" />
+                    </div>
+                  </div>
+                  
+                  <input type="file" id="filesinput" multiple>
+                  <div class="row">
+
+                    <a href="#" id="createvideo" class="btn btn-large btn-primary create-gif-button form-control" role="button">Create MP4</a>
+                  </div>
+              </div>
+              <form class="options-form" id="gifmaker">
+                <div class="row">
+                  <div class="col-md-3 hidden">
+                    <label for="GIFSource">GIF Source</label>
+                    <div class="button custom-select ">
+                      <input type="hidden" name="GIFSource" class="form-control" id="GIFSource" value="images"/>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="GIFType">GIF type</label>
+                    <div class="button custom-select">
+                      <input type="file" name="" id="imgHolder" multiple="multiple" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="GIFType">GIF type</label>
+                    <div class="button custom-select">
+                      <select name="GIFType" id="GIFType" class="form-control">
+                        <option value="animated">Animated</option>
+                        <option value="snapshot">Snap Shot</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="gifWidth">GIF Width</label>
+                    <div class="input-group">
+                      <input name="gifWidth" id="gifWidth" class="form-control" value="200"  type="number"/>
+                      <div class="input-group-addon">px</div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="gifHeight">GIF Height</label>
+                    <div class="input-group">
+                      <input name="gifHeight" id="gifHeight" class="form-control" value="200"  type="number" />
+                      <div class="input-group-addon">px</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">                  
+                  <div class="col-md-3">
+                    <label for="filter">Filter</label>
+                    <div class="input-group">
+                      <input name="filter" id="filter" class="form-control" value="" type="text" />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="interval">Interval</label>
+                    <div class="input-group">
+                      <input name="interval" id="interval" class="form-control" value=".1" step=".1"  type="number" />
+                      <div class="input-group-addon">secs</div>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="numFrames">Number of Frames</label>
+                    <input name="numFrames" id="numFrames" class="form-control" value="10"  type="number" />
+                  </div>
+                  <div class="col-md-3">
+                    <label for="frameDuration">Frame Duration</label>
+                    <input name="frameDuration" id="frameDuration" class="form-control" value="1" step="1"  type="number" />
+                  </div>
+                </div>
+                <div class="row">                  
+                  <div class="col-md-3">
+                    <label for="gifText">Watermark Text</label>
+                    <input name="gifText" id="gifText" class="form-control" value="" placeholder="Add text here..." />
+                  </div>
+                  <div class="col-md-2">
+                    <label for="fontWeight">Font Weight</label>
+                    <div class="button custom-select">
+                      <select name="fontWeight" id="fontWeight" class="form-control">
+                        <option value="normal">normal</option>
+                        <option value="bold">bold</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <label for="fontSize">Font Size</label>
+                    <div class="input-group">
+                      <input name="fontSize" id="fontSize" class="form-control" value="16"  type="number" />
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <label for="fontFamily">Font Family</label>
+                    <div class="button custom-select">
+                      <select name="fontFamily" id="fontFamily" class="form-control">
+                        <option value="sans-serif">sans-serif</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Calibri">Calibri</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="fontColor">Font Color</label>
+                    <input type="color" name="fontColor" id="fontColor" class="form-control" value="#FFFFFF"  />
+                  </div>
+                </div>
+                <div class="row">                  
+                  <div class="col-md-3">
+                    <label for="textAlign">Text Align</label>
+                    <div class="button custom-select">
+                      <select name="textAlign" id="textAlign" class="form-control">
+                        <option value="center">center</option>
+                        <option value="left">left</option>
+                        <option value="right">right</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="textBaseline">Text Baseline</label>
+                    <div class="button custom-select">
+                      <select name="textBaseline" id="textBaseline" class="form-control">
+                        <option value="bottom">bottom</option>
+                        <option value="center">center</option>
+                        <option value="top">top</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="sampleInterval">Sample Interval</label>
+                    <input name="sampleInterval" id="sampleInterval" class="form-control" value="10"  type="number" />
+                  </div>
+                  <div class="col-md-3">
+                    <label for="numWorkers">Num Workers</label>
+                    <input name="numWorkers" id="numWorkers" class="form-control" value="2"  type="number" />
+                  </div>
+                </div>
+                <br>
+                <a href="#" id="create-gif" class="btn btn-large btn-primary create-gif-button form-control" role="button">Create GIF</a>
+              </form>
+            </div>
+            <div class="col-md-5 text-center preview-section">
+              <h3>
+                Preview
+              </h3>
+              <section class="gifshot-image-preview-section">
+              </section>
+              <section>
+                  <!-- <video id="awesome" class="hidden" controls>
+                    <source src="video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video> -->
+                  <div class="row">
+                      <div id="" class="progressBar hidden">                     
+                        <span id="counterup">1</span>/4
+                      </div><br>
+                      <span id="status" class="text-info">Select some images.</span><br><br>
+                  </div>
+                  <br>
+                  <div class="mp4holder"><a style="display:none" id="downloadmp4" download="video.mp4" class="btn btn-large btn-default save-gif-button">Download mp4</a></div>
+                  <canvas id="canvas" style="display:none"></canvas>
+              </section>
+              <div class="placeholder-div hidden">
+                <span class="placeholder-div-dimensions"></span>
+              </div>
+              <div class="">
+                <br>
+                <a href="" id="save-gif" class="btn btn-large btn-default save-gif-button hidden " role="button" download="warda-gif.gif" target="_self">Download GIF</a>
+              </div>
+              <progress max="1" value="0" class="gifshot-progress-bar hidden"></progress>
+            </div>
+          </div>
+      </section>
+      <script type="text/javascript">
+        
+      </script>
+      <script src="js/dependencies/gifshot.min.js"></script>
+      <script src="js/dependencies/lodash.min.js"></script>     
+      <script src="js/demo.js"></script>      
+      <script src="jsvideo/whammy.js"></script>
+      <script src="jsvideo/main.js"></script>
+    </body>
+</html>
